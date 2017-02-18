@@ -1,0 +1,7 @@
+#Fri Feb 17 22:57:31 PST 2017
+base.0=C\:\\Users\\hp\\android\\MiniProject3\\FirebaseDemo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_8cec1f364acc775cc67d1742e308693343b1db04
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=C\:\\Users\\hp\\android\\MiniProject3\\FirebaseDemo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_6e1a1f4eca530e8d46775c912437a5e4f92b88c0\\classes.dex
+base.1=C\:\\Users\\hp\\android\\MiniProject3\\FirebaseDemo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_6e1a1f4eca530e8d46775c912437a5e4f92b88c0
+file.0=C\:\\Users\\hp\\android\\MiniProject3\\FirebaseDemo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_8cec1f364acc775cc67d1742e308693343b1db04\\classes.dex
