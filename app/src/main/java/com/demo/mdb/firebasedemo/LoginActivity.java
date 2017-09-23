@@ -25,20 +25,16 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d("ye", "onAuthStateChanged:signed_in:" + user.getUid());
+        //Part 1: Authentication
+        //Question 1: add Firebase Authentication to your project
+        //Question 2: create an instance variable for the FirebaseAuth and initialize it below
 
-                } else {
-                    Log.d("ye", "onAuthStateChanged:signed_out");
-                }
-            }
-        };
+        //here
 
+        //Question 3: create an instance variable to listen for the auth state. Log when the auth state changes
+
+
+        //Question 4 in attemptLogin()
         ((Button) findViewById(R.id.loginButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,39 +42,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //Question 5 in attemptSignup()
         ((Button) findViewById(R.id.signupButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptSignup();
             }
         });
+
+        //Part 2 in ListActivity
     }
 
     private void attemptLogin() {
         String email = ((EditText) findViewById(R.id.emailView)).getText().toString();
         String password = ((EditText) findViewById(R.id.emailView)).getText().toString();
         if (!email.equals("") && !password.equals("")) {
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d("ye", "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-                            if (!task.isSuccessful()) {
-                                Log.w("ye", "signInWithEmail:failed", task.getException());
-                                Toast.makeText(LoginActivity.this, "Sign in failed",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-
-                            else {
-                                Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                    });
+            //Question 4: add sign in capability. If it is successful, go to the listactivity, else display a Toast
         }
     }
 
@@ -86,25 +65,8 @@ public class LoginActivity extends AppCompatActivity {
         String email = ((EditText) findViewById(R.id.emailView)).getText().toString();
         String password = ((EditText) findViewById(R.id.emailView)).getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("ye", "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("ye", "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, "sign up failed",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-                            startActivity(intent);
-                        }
-                    }
-                });
+        if (!email.equals("") && !password.equals("")) {
+            //Question 5: add sign up capability. Same results as log in.
+        }
     }
 }

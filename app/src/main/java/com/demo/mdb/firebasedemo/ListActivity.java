@@ -15,10 +15,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
+    final ArrayList<Message> messages = new ArrayList<>();
+    final ListAdapter adapter = new ListAdapter(getApplicationContext(), messages);
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/messages");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +30,13 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         RecyclerView recyclerAdapter = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerAdapter.setLayoutManager(new LinearLayoutManager(this));
-        ListAdapter adapter = new ListAdapter(getApplicationContext(), getList());
+
+
+        //Part 2: implement getList
+        //Question 1: add Firebase Realtime Database to your project
         recyclerAdapter.setAdapter(adapter);
+        //Question 2: initialize the messages based on what is in the database
+        adapter.notifyDataSetChanged();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -37,40 +46,11 @@ public class ListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-    private ArrayList<Message> getList() {
-        final ArrayList<Message> messages = new ArrayList<>();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/messages");
-        ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
-                //would normally getKey here
-                messages.add(new Message(dataSnapshot.child("bit").getValue(String.class),
-                        dataSnapshot.child("url").getValue(String.class)));
-            }
+        //Question 3: add an event listener for the children of the ref, and make it such that
+        // every time a message is added, it creates a new message, adds it to messages and updates
+        // the UI
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return messages;
+        //Next part in NewMessageActivity
     }
 }

@@ -32,7 +32,7 @@ public class NewMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
 
-        ((Button) findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -47,27 +47,26 @@ public class NewMessageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-            final String key = ref.child("socials").push().getKey();
-            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fir-demo-95a8d.appspot.com");
-            StorageReference riversRef = storageRef.child(key + ".png");
-            //issue with camera
-            riversRef.putFile(data.getData()).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(NewMessageActivity.this, "need an image!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String msg = (((Switch) findViewById(R.id.switch1)).isChecked() ? "1" : "0");
-                    ref.child("messages").child(key).child("bit").setValue(msg);
-                    ref.child("messages").child(key).child("url").setValue(key);
-                    Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-                    startActivity(intent);
-                }
-            });
+            //Part 3: Here we will get the image and the code from the switch and create a new
+            // message while also storing the image
+            //Question 1: add Firebase Storage to your project
+            //Question 2: create a DatabaseReference below
 
+
+            //Question 3: generate a key below to use as a unique identifier for the message, and
+            // for the image filename
+
+
+            //Question 4: create a StorageReference below (hint: the url you need can be found in
+            // your console at firebase.google.com
+
+
+            //Question 5: add a png file to the storage using the key as the filename. If it fails,
+            // write a toast. If it works, add the message. Get the value of the switch using this line:
+            // (((Switch) findViewById(R.id.switch1)).isChecked() ? "1" : "0")
+            // Then go back to the ListActivity
+
+            //Last part in ListAdapter
         }
 
 

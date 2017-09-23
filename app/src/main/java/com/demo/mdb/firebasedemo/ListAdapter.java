@@ -52,6 +52,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
         Message m = data.get(position);
         holder.msgView.setText(m.message);
+
+        //haven't taught this yet but essentially it runs separately from the UI
         class DownloadFilesTask extends AsyncTask<String, Void, Bitmap> {
             protected Bitmap doInBackground(String... strings) {
                 try {return Glide.
@@ -69,17 +71,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
                 holder.imageView.setImageBitmap(result);
             }
         }
-        FirebaseStorage.getInstance().getReferenceFromUrl("gs://fir-demo-95a8d.appspot.com").child(m.firebaseImageUrl + ".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.d("ye", uri.toString());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d("sad", exception.toString());
-            }
-        });
+
+        //Part 4: Load the image from the url. Use
+        // new DownloadFilesTask().execute(uri.toString())
+        // to get set the imageView using the resulting Uri. If it fails, log the exception
+
+        //dw if it doesn't work, bc it didn't work for me :(
     }
 
 
