@@ -29,10 +29,23 @@ public class LoginActivity extends AppCompatActivity {
         //Question 1: add Firebase Authentication to your project
         //Question 2: create an instance variable for the FirebaseAuth and initialize it below
 
-        //here
+        mAuth = FirebaseAuth.getInstance();
 
         //Question 3: create an instance variable to listen for the auth state. Log when the auth state changes
-
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d("wahoo", "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d("yehaa", "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
 
         //Question 4 in attemptLogin()
         ((Button) findViewById(R.id.loginButton)).setOnClickListener(new View.OnClickListener() {
@@ -55,18 +68,49 @@ public class LoginActivity extends AppCompatActivity {
 
     private void attemptLogin() {
         String email = ((EditText) findViewById(R.id.emailView)).getText().toString();
-        String password = ((EditText) findViewById(R.id.emailView)).getText().toString();
+        String password = ((EditText) findViewById(R.id.passwordView)).getText().toString();
         if (!email.equals("") && !password.equals("")) {
-            //Question 4: add sign in capability. If it is successful, go to the listactivity, else display a Toast
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("wot", "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Log.w("sakjd", "signInWithEmail:failed", task.getException());
+                                Toast.makeText(LoginActivity.this, "darn sign in failed!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                startActivity(new Intent(LoginActivity.this, ListActivity.class));
+                            }
+                        }
+                    });
         }
     }
 
     private void attemptSignup() {
         String email = ((EditText) findViewById(R.id.emailView)).getText().toString();
-        String password = ((EditText) findViewById(R.id.emailView)).getText().toString();
+        String password = ((EditText) findViewById(R.id.passwordView)).getText().toString();
 
         if (!email.equals("") && !password.equals("")) {
-            //Question 5: add sign up capability. Same results as log in.
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("whao", "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, R.string.failed_signup, Toast.LENGTH_SHORT).show();
+                            } else {
+                                startActivity(new Intent(LoginActivity.this, ListActivity.class));
+                            }
+                        }
+                    });
         }
     }
 }

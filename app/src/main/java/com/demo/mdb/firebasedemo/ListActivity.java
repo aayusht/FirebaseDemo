@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
     final ArrayList<Message> messages = new ArrayList<>();
-    final ListAdapter adapter = new ListAdapter(getApplicationContext(), messages);
+    final ListAdapter adapter = new ListAdapter(this, messages);
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/messages");
 
     @Override
@@ -36,7 +36,23 @@ public class ListActivity extends AppCompatActivity {
         //Question 1: add Firebase Realtime Database to your project
         recyclerAdapter.setAdapter(adapter);
         //Question 2: initialize the messages based on what is in the database
-        adapter.notifyDataSetChanged();
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
+                    messages.add(dataSnapshot2.getValue(Message.class));
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("oh no it didnt work", "Failed to read value.", error.toException());
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

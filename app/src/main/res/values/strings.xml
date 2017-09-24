@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FirebaseDemo</string>
     <string name="title_activity_list">ListActivity</string>
+    <string name="failed_signup">wow u suk</string>
 </resources>

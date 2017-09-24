@@ -18,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -54,29 +56,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
         holder.msgView.setText(m.message);
 
         //haven't taught this yet but essentially it runs separately from the UI
-        class DownloadFilesTask extends AsyncTask<String, Void, Bitmap> {
-            protected Bitmap doInBackground(String... strings) {
-                try {return Glide.
-                        with(context).
-                        load(strings[0]).
-                        asBitmap().
-                        into(100, 100). // Width and height
-                        get();}
-                catch (Exception e) {return null;}
-            }
-
-            protected void onProgressUpdate(Void... progress) {}
-
-            protected void onPostExecute(Bitmap result) {
-                holder.imageView.setImageBitmap(result);
-            }
-        }
-
-        //Part 4: Load the image from the url. Use
-        // new DownloadFilesTask().execute(uri.toString())
-        // to get set the imageView using the resulting Uri. If it fails, log the exception
-
-        //dw if it doesn't work, bc it didn't work for me :(
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(m.firebaseImageUrl + ".png");
+        Glide.with(context).using(new FirebaseImageLoader()).load(storageReference).into(holder.imageView);
     }
 
 

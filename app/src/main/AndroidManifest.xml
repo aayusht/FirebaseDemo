@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".ListActivity" />
         <activity android:name=".NewMessageActivity"></activity>
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
